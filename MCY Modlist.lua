@@ -108,7 +108,6 @@ local ModList = {
     [9132118411] = "Unknown", -- ReefGirl89
     [1184286150] = "Unknown", -- chaosaAngel45
     [5749665] = "Unknown", -- LuluWolf
-    [9920991471] = "Test",
 }
 
 return ModList
