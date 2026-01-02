@@ -94,6 +94,7 @@ local ModList = {
     [91812802] = true,
     [5749665] = true,
     [84798475] = true,
+    [9920991471] = true,
 }
 
 return ModList
