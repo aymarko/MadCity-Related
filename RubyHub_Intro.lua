@@ -141,7 +141,7 @@ local PercentageLabel = Instance.new("TextLabel")
 PercentageLabel.Parent = ScreenGui
 PercentageLabel.BackgroundTransparency = 1
 PercentageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-PercentageLabel.Font = Enum.Font.Code
+PercentageLabel.Font = Enum.Font.GothamBlack
 PercentageLabel.TextSize = 16
 PercentageLabel.Position = UDim2.new(0.5, -150, 0.5, (263 / 2) + 32)
 PercentageLabel.Size = UDim2.new(0, 300, 0, 30)
@@ -153,7 +153,7 @@ local InfoLabel = Instance.new("TextLabel")
 InfoLabel.Parent = ScreenGui
 InfoLabel.BackgroundTransparency = 1
 InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-InfoLabel.Font = Enum.Font.Code
+InfoLabel.Font = Enum.Font.GothamBlack
 InfoLabel.TextSize = 20
 InfoLabel.Position = UDim2.new(0.5, -150, 0.5, (263 / 2) + 50)
 InfoLabel.Size = UDim2.new(0, 300, 0, 50)
@@ -162,12 +162,12 @@ InfoLabel.TextTransparency = 1
 InfoLabel.TextXAlignment = Enum.TextXAlignment.Center
 
 local logs = {
-	"Initializing modules...",
 	"Checking for updates...",
-	"Ruby Hub loading, please wait..."
+	"Getting services...",
+	"Initializing modules..."
 }
 
-local frameUpdateRate = 0.028
+local frameUpdateRate = 0.03
 local maxFramesToShow = #frames - 10
 local totalFrameTime = maxFramesToShow * frameUpdateRate
 
@@ -258,7 +258,16 @@ TweenService:Create(LoadingBar, TweenInfo.new(0.1, Enum.EasingStyle.Sine, Enum.E
 }):Play()
 LoadingBar.BackgroundColor3 = Color3.fromRGB(187, 30, 119)
 PercentageLabel.Text = "100%"
-task.wait(0.15)
+
+InfoLabel.Text = "Done!"
+InfoLabel.TextTransparency = 1
+
+for i = 1, 8 do
+	InfoLabel.TextTransparency = InfoLabel.TextTransparency - 0.125
+	task.wait(0.02)
+end
+
+task.wait(1)
 
 for i = 1, 8 do
 	InfoLabel.TextTransparency = InfoLabel.TextTransparency + 0.125
