@@ -26,7 +26,7 @@ end
 
 local sound = Instance.new("Sound")
 sound.Parent = game.Workspace
-sound.Volume = 3
+sound.Volume = 2
 
 if isfile(songPath) then
     local audioAsset = getcustomasset(songPath)
