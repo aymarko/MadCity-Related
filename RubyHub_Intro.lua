@@ -8,14 +8,33 @@ blur.Size = 0
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
 
-local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://8503531171"
-sound.Parent = game.Workspace
-sound.Volume = 10
+if not isfolder("Audio") then
+    makefolder("Audio")
+end
 
-task.delay(1, function()
-	sound:Play()
-end)
+local songPath = "Audio/IntroSound.mp3"
+
+if not isfile(songPath) then
+    local success, content = pcall(function()
+        return game:HttpGet('https://github.com/aymarko/MadCity-Related/raw/refs/heads/main/Sound_Intro.mp3')
+    end)
+    
+    if success then
+        writefile(songPath, content)
+    end
+end
+
+local sound = Instance.new("Sound")
+sound.Parent = game.Workspace
+sound.Volume = 3
+
+if isfile(songPath) then
+    local audioAsset = getcustomasset(songPath)
+    sound.SoundId = audioAsset
+end
+
+sound:Play()
+
 
 local frames = {
 	"113616397450765", "113721642504853", "128535637484055", "83791463181225", "86204986669970",
