@@ -12,11 +12,11 @@ if not isfolder("Audio") then
     makefolder("Audio")
 end
 
-local songPath = "Audio/IntroSound.mp3"
+local songPath = "Audio/RubyHub_IntroSound.mp3"
 
 if not isfile(songPath) then
     local success, content = pcall(function()
-        return game:HttpGet('https://github.com/aymarko/MadCity-Related/raw/refs/heads/main/Sound_Intro.mp3')
+        return game:HttpGet('https://github.com/aymarko/MadCity-Related/raw/refs/heads/main/RubyHub_IntroSound.mp3')
     end)
     
     if success then
@@ -26,7 +26,7 @@ end
 
 local sound = Instance.new("Sound")
 sound.Parent = game.Workspace
-sound.Volume = 2
+sound.Volume = 10
 
 if isfile(songPath) then
     local audioAsset = getcustomasset(songPath)
