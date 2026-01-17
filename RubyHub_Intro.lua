@@ -93,21 +93,24 @@ local currentImageLabel = {
 }
 
 for i = 1, #frames do
+	print(i)
 	local frame = Instance.new("ImageLabel")
 	local UICorner = Instance.new("UICorner")
 	frame.Parent = ScreenGui
 	frame.BackgroundColor3 = Color3.new(1, 1, 1)
-	frame.BackgroundTransparency = 1
+	frame.BackgroundTransparency = 0
 	frame.Position = UDim2.new(0.5, 0, 0.5, 0)
 	frame.AnchorPoint = Vector2.new(0.5, 0.5)
 	frame.Rotation = 0
 	frame.Size = UDim2.new(0, 0, 0, 0)
-	frame.ImageTransparency = 1
+	frame.ImageTransparency = 0
 	frame.Image = "rbxassetid://" .. frames[i]
 	frame.ZIndex = 1
 	UICorner.CornerRadius = UDim.new(0.1, 0)
 	UICorner.Parent = frame
 	frame_data[i] = frame
+	frame.BackgroundTransparency = 1
+	frame.ImageTransparency = 1
 end
 
 for i = 1, #frames do
