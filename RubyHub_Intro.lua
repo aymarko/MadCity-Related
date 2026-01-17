@@ -187,7 +187,7 @@ local logs = {
 	"Initializing modules..."
 }
 
-local frameUpdateRate = 0.03
+local frameUpdateRate = 0.025
 local maxFramesToShow = #frames - 10
 local totalFrameTime = maxFramesToShow * frameUpdateRate
 
