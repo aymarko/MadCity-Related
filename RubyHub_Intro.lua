@@ -248,7 +248,7 @@ for i, msg in ipairs(logs) do
 			Size = UDim2.new(progress, 0, 1, 0)
 		}):Play()
 		
-		local targetColor = Color3.fromRGB(187, 30, 119)
+		local targetColor = Color3.fromRGB(250, 27, 117)
 		local startColor = Color3.new(1, 1, 1)
 		LoadingBar.BackgroundColor3 = startColor:Lerp(targetColor, progress)
 		
@@ -264,7 +264,7 @@ for i, msg in ipairs(logs) do
 			Size = UDim2.new(progress, 0, 1, 0)
 		}):Play()
 		
-		local targetColor = Color3.fromRGB(187, 30, 119)
+		local targetColor = Color3.fromRGB(250, 27, 117)
 		local startColor = Color3.new(1, 1, 1)
 		LoadingBar.BackgroundColor3 = startColor:Lerp(targetColor, progress)
 		
@@ -276,7 +276,7 @@ end
 TweenService:Create(LoadingBar, TweenInfo.new(0.1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
 	Size = UDim2.new(1, 0, 1, 0)
 }):Play()
-LoadingBar.BackgroundColor3 = Color3.fromRGB(187, 30, 119)
+LoadingBar.BackgroundColor3 = Color3.fromRGB(250, 27, 117)
 PercentageLabel.Text = "100%"
 
 InfoLabel.Text = "Done!"
