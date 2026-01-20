@@ -2,6 +2,9 @@ local ModList = {
     -- Owner
     [59967] = "Owner", -- taymaster
 
+    --COOL12JACK
+    [6395741] = "Top #1 Reporter",
+
     -- Administrators / Key Staff
     [116481933] = "Friends", -- Rootie_DaHoodie
     [17897891] = "Friends", -- FamedChris
