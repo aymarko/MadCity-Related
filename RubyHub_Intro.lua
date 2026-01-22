@@ -91,7 +91,6 @@ local currentImageLabel = {
 }
 
 for i = 1, #frames do
-	print(i)
 	local frame = Instance.new("ImageLabel")
 	local UICorner = Instance.new("UICorner")
 	frame.Parent = ScreenGui
