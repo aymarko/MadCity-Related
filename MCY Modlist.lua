@@ -4,7 +4,6 @@ local ModList = {
 
     [6395741] = "Exploit Hunter", -- COOL12JACK
     [2036682531] = "Exploit Hunter", -- yxv2y
-    [8587920360] = "Wicky Test",
 
     -- Administrators / Key Staff
     [116481933] = "Friends", -- Rootie_DaHoodie
@@ -22,6 +21,7 @@ local ModList = {
     [146462043] = "Moderator", -- DJPelta
     [94467335] = "Moderator", -- OmegaAnoobis
     [70556831] = "Moderator", -- DarkAgeSky
+    [10394523569] = "Moderator", -- Qualunos
 
     -- Content Creators
     [1933300649] = "Content Creator", -- BornYeti
