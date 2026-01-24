@@ -4,7 +4,7 @@ local ModList = {
 
     [6395741] = "Exploit Hunter", -- COOL12JACK
     [2036682531] = "Exploit Hunter", -- yxv2y
-    [8587920360] = "Wicky"
+    [8587920360] = "Wicky",
 
     -- Administrators / Key Staff
     [116481933] = "Friends", -- Rootie_DaHoodie
