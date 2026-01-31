@@ -1,1 +1,1 @@
-_G.currentversion = "2.3"
+_G.currentversion = "2.4"
