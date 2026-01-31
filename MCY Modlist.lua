@@ -3,7 +3,7 @@ local ModList = {
     [59967] = "Owner", -- taymaster
 
     [6395741] = "Exploit Hunter", -- COOL12JACK
-    [10401663246] = "LOL",
+    [10401663246] = "Admin", -- COOL12JACK
     
     -- Administrators / Key Staff
     [116481933] = "Friends", -- Rootie_DaHoodie
