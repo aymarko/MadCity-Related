@@ -4,7 +4,7 @@ local ModList = {
 
     [6395741] = "Exploit Hunter", -- COOL12JACK
 
-    -- Administrators / Key Staff
+    -- Devs
     [116481933] = "Friends", -- Rootie_DaHoodie
     [17897891] = "Friends", -- FamedChris
     [4426328480] = "Friends", -- AlreadyPrototype
@@ -15,12 +15,16 @@ local ModList = {
     [4610703127] = "World Builder", -- MadCityUploader
     [16161864] = "World Builder", -- Gemini_II
 
+    --Administrator
+    [94467335] = "Administrator", -- OmegaAnoobis
+    [4276156092] = "Administrator", -- OmegaAnoobisAlt
+
     -- Moderators
     [966027914] = "Moderator", -- CraftiCookie
     [146462043] = "Moderator", -- DJPelta
-    [94467335] = "Moderator", -- OmegaAnoobis
     [70556831] = "Moderator", -- DarkAgeSky
     [10394523569] = "Moderator", -- Qualunos
+    [4870521380] = "Moderator", -- jenjual
 
     -- Content Creators
     [1933300649] = "Content Creator", -- BornYeti
