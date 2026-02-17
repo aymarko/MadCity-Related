@@ -1,15 +1,9 @@
---v2
-local TweenService = game:GetService("TweenService")
+--v3
+local TweenService    = game:GetService("TweenService")
 local ContentProvider = game:GetService("ContentProvider")
-local RunService = game:GetService("RunService")
+local RunService      = game:GetService("RunService")
 
-_G.RubyHub_Loading = _G.RubyHub_Loading or {
-    step  = 0,
-    label = "Starting...",
-    done  = false,
-}
-
-local TOTAL_STEPS = 6
+local RL = _G.RubyHub_Loading
 
 local blur = Instance.new("BlurEffect", game.Lighting)
 blur.Size = 0
@@ -17,33 +11,30 @@ blur.Size = 0
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
 
-
-if not isfolder("Audio") then
-    makefolder("Audio")
-end
+-- ============================================================
+-- AUDIO
+-- ============================================================
+if not isfolder("Audio") then makefolder("Audio") end
 
 local songPath = "Audio/RubyHub_IntroSound.mp3"
-
 if not isfile(songPath) then
-    local success, content = pcall(function()
+    local ok, content = pcall(function()
         return game:HttpGet('https://github.com/aymarko/MadCity-Related/raw/refs/heads/main/RubyHub_IntroSound.mp3')
     end)
-    if success then
-        writefile(songPath, content)
-    end
+    if ok then writefile(songPath, content) end
 end
 
 local sound = Instance.new("Sound")
 sound.Parent = game.Workspace
 sound.Volume = 10
-
 if isfile(songPath) then
-    local audioAsset = getcustomasset(songPath)
-    sound.SoundId = audioAsset
+    sound.SoundId = getcustomasset(songPath)
 end
-
 sound:Play()
 
+-- ============================================================
+-- FRAMES
+-- ============================================================
 local frames = {
     "113616397450765", "113721642504853", "128535637484055", "83791463181225", "86204986669970",
     "79153456781381", "129965526741923", "86347265176957", "121895208874589", "133515000822799",
@@ -86,22 +77,16 @@ local allFrameAssets = {}
 for i = 1, #frames do
     table.insert(allFrameAssets, "rbxassetid://" .. frames[i])
 end
-
-pcall(function()
-    ContentProvider:PreloadAsync(allFrameAssets)
-end)
-
+pcall(function() ContentProvider:PreloadAsync(allFrameAssets) end)
 task.wait(0.5)
-
 
 local frame_data = {}
 local currentImageLabel = { Size = UDim2.new(0, 0, 0, 0) }
 
 for i = 1, #frames do
-    local frame   = Instance.new("ImageLabel")
-    local corner  = Instance.new("UICorner")
+    local frame  = Instance.new("ImageLabel")
+    local corner = Instance.new("UICorner")
     frame.Parent             = ScreenGui
-    frame.BackgroundColor3   = Color3.new(1, 1, 1)
     frame.BackgroundTransparency = 1
     frame.Position           = UDim2.new(0.5, 0, 0.5, 0)
     frame.AnchorPoint        = Vector2.new(0.5, 0.5)
@@ -114,78 +99,90 @@ for i = 1, #frames do
     frame_data[i]            = frame
 end
 
-for i = 1, #frames do
-    if frame_data[i] then frame_data[i].ImageTransparency = 0 end
-end
+-- Preload-Flash
+for i = 1, #frames do if frame_data[i] then frame_data[i].ImageTransparency = 0 end end
 task.wait(0.05)
-for i = 1, #frames do
-    if frame_data[i] then frame_data[i].ImageTransparency = 1 end
-end
+for i = 1, #frames do if frame_data[i] then frame_data[i].ImageTransparency = 1 end end
 task.wait(0.05)
 
-local heartbeatConnection
-heartbeatConnection = RunService.Heartbeat:Connect(function()
-    local targetSize = currentImageLabel.Size
+-- Heartbeat: alle Frames auf gleiche Größe
+local heartbeatConn = RunService.Heartbeat:Connect(function()
+    local s = currentImageLabel.Size
     for i = 1, #frame_data do
-        if frame_data[i] and frame_data[i].Size ~= targetSize then
-            frame_data[i].Size = targetSize
+        if frame_data[i] and frame_data[i].Size ~= s then
+            frame_data[i].Size = s
         end
     end
 end)
 
+-- ============================================================
+-- UI
+-- ============================================================
 local LoadingBarContainer = Instance.new("Frame")
-LoadingBarContainer.Parent               = ScreenGui
-LoadingBarContainer.BackgroundColor3     = Color3.fromRGB(40, 40, 40)
+LoadingBarContainer.Parent = ScreenGui
+LoadingBarContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 LoadingBarContainer.BackgroundTransparency = 1
-LoadingBarContainer.Position             = UDim2.new(0.5, 0, 0.5, (263 / 2) + 20)
-LoadingBarContainer.Size                 = UDim2.new(0, 0, 0, 0)
-LoadingBarContainer.BorderSizePixel      = 0
-LoadingBarContainer.AnchorPoint          = Vector2.new(0.5, 0)
-
-local containerCorner = Instance.new("UICorner")
-containerCorner.CornerRadius = UDim.new(1, 0)
-containerCorner.Parent       = LoadingBarContainer
+LoadingBarContainer.Position = UDim2.new(0.5, 0, 0.5, (263/2) + 20)
+LoadingBarContainer.Size = UDim2.new(0, 0, 0, 0)
+LoadingBarContainer.BorderSizePixel = 0
+LoadingBarContainer.AnchorPoint = Vector2.new(0.5, 0)
+local cc = Instance.new("UICorner")
+cc.CornerRadius = UDim.new(1, 0)
+cc.Parent = LoadingBarContainer
 
 local LoadingBar = Instance.new("Frame")
-LoadingBar.Parent           = LoadingBarContainer
+LoadingBar.Parent = LoadingBarContainer
 LoadingBar.BackgroundColor3 = Color3.new(1, 1, 1)
-LoadingBar.Size             = UDim2.new(0, 0, 1, 0)
-LoadingBar.BorderSizePixel  = 0
-
-local barCorner = Instance.new("UICorner")
-barCorner.CornerRadius = UDim.new(1, 0)
-barCorner.Parent       = LoadingBar
+LoadingBar.Size = UDim2.new(0, 0, 1, 0)
+LoadingBar.BorderSizePixel = 0
+local bc = Instance.new("UICorner")
+bc.CornerRadius = UDim.new(1, 0)
+bc.Parent = LoadingBar
 
 local PercentageLabel = Instance.new("TextLabel")
-PercentageLabel.Parent             = ScreenGui
+PercentageLabel.Parent = ScreenGui
 PercentageLabel.BackgroundTransparency = 1
-PercentageLabel.TextColor3         = Color3.fromRGB(255, 255, 255)
-PercentageLabel.Font               = Enum.Font.GothamBlack
-PercentageLabel.TextSize           = 16
-PercentageLabel.Position           = UDim2.new(0.5, -150, 0.5, (263 / 2) + 32)
-PercentageLabel.Size               = UDim2.new(0, 300, 0, 30)
-PercentageLabel.Text               = "0%"
-PercentageLabel.TextTransparency   = 1
-PercentageLabel.TextXAlignment     = Enum.TextXAlignment.Center
+PercentageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+PercentageLabel.Font = Enum.Font.GothamBlack
+PercentageLabel.TextSize = 16
+PercentageLabel.Position = UDim2.new(0.5, -150, 0.5, (263/2) + 32)
+PercentageLabel.Size = UDim2.new(0, 300, 0, 30)
+PercentageLabel.Text = "0%"
+PercentageLabel.TextTransparency = 1
+PercentageLabel.TextXAlignment = Enum.TextXAlignment.Center
 
 local InfoLabel = Instance.new("TextLabel")
-InfoLabel.Parent             = ScreenGui
+InfoLabel.Parent = ScreenGui
 InfoLabel.BackgroundTransparency = 1
-InfoLabel.TextColor3         = Color3.fromRGB(255, 255, 255)
-InfoLabel.Font               = Enum.Font.GothamBlack
-InfoLabel.TextSize           = 20
-InfoLabel.Position           = UDim2.new(0.5, -150, 0.5, (263 / 2) + 50)
-InfoLabel.Size               = UDim2.new(0, 300, 0, 50)
-InfoLabel.Text               = ""
-InfoLabel.TextTransparency   = 1
-InfoLabel.TextXAlignment     = Enum.TextXAlignment.Center
+InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+InfoLabel.Font = Enum.Font.GothamBlack
+InfoLabel.TextSize = 20
+InfoLabel.Position = UDim2.new(0.5, -150, 0.5, (263/2) + 50)
+InfoLabel.Size = UDim2.new(0, 300, 0, 50)
+InfoLabel.Text = ""
+InfoLabel.TextTransparency = 1
+InfoLabel.TextXAlignment = Enum.TextXAlignment.Center
 
+-- ============================================================
+-- TIMING KONSTANTEN (exakt wie Original)
+-- 160 frames * 0.025s = 4.0s für die Loading-Loop
+-- 6 steps * 16 ticks = 96 ticks total
+-- stepDuration = 4.0 / 96 = 0.04167s pro Tick
+-- ============================================================
+local TOTAL_STEPS     = 6
+local frameUpdateRate = 0.025
+local maxFramesToShow = #frames - 10   -- 160
+local totalFrameTime  = maxFramesToShow * frameUpdateRate  -- 4.0s
+local totalTicks      = TOTAL_STEPS * 16                   -- 96
+local stepDuration    = totalFrameTime / totalTicks        -- ~0.0417s
 
-local frameUpdateRate   = 0.025
-local maxFramesToShow   = #frames - 10
-local currentFrame      = 1
-local frameAnimDone     = false
+local accentColor = Color3.fromRGB(250, 27, 117)
+local whiteColor  = Color3.new(1, 1, 1)
 
+-- ============================================================
+-- FRAME ANIMATION (parallel)
+-- ============================================================
+local currentFrame = 1
 task.spawn(function()
     while currentFrame <= maxFramesToShow and ScreenGui.Parent do
         for i = 1, #frames do
@@ -196,110 +193,109 @@ task.spawn(function()
         currentFrame = currentFrame + 1
         task.wait(frameUpdateRate)
     end
-    frameAnimDone = true
 end)
 
-
+-- ============================================================
+-- OPEN ANIMATION (0.92s total, läuft vor der Loading-Loop)
+-- ============================================================
 for i = 1, 15 do
-    currentImageLabel.Size = UDim2.new(0, 303 * (i / 15), 0, 263 * (i / 15))
+    currentImageLabel.Size = UDim2.new(0, 303*(i/15), 0, 263*(i/15))
     task.wait(0.02)
 end
-
 for i = 1, 60, 3 do
     blur.Size = i
     task.wait(0.01)
 end
-
 for i = 1, 15 do
-    LoadingBarContainer.Size     = UDim2.new(0, 300 * (i / 15), 0, 8 * (i / 15))
-    LoadingBarContainer.Position = UDim2.new(0.5, 0, 0.5, (263 / 2) + 20)
+    LoadingBarContainer.Size = UDim2.new(0, 300*(i/15), 0, 8*(i/15))
     task.wait(0.02)
 end
-
 for i = 1, 8 do
-    LoadingBarContainer.BackgroundTransparency = 1 - (0.7 * i / 8)
-    PercentageLabel.TextTransparency           = 1 - (i / 8)
+    LoadingBarContainer.BackgroundTransparency = 1 - (0.7 * i/8)
+    PercentageLabel.TextTransparency = 1 - (i/8)
     task.wait(0.015)
 end
 
+-- ============================================================
+-- LOADING LOOP — 6 echte Steps, je 16 Ticks = 4.0s total
+-- Pro Step:
+--   Ticks 1-8:  Label fade-in + Bar-Fortschritt erste Hälfte
+--   Ticks 9-16: Label sichtbar + Bar-Fortschritt zweite Hälfte
+-- Das Intro wartet maximal 1 Tick extra auf den echten Check.
+-- Ist er noch nicht fertig → läuft Animation trotzdem weiter.
+-- ============================================================
+local stepLabels = {
+    "Checking game...",
+    "Checking executor...",
+    "Running SUNC check...",
+    "Loading security system...",
+    "Checking version...",
+    "Getting services...",
+}
 
-local STEP_TIMEOUT   = 3.0  
-local STEP_FADE_TIME = 0.015 
+for stepIndex = 1, TOTAL_STEPS do
+    -- 1 Tick lang auf den echten Check warten (nicht blockierend)
+    if RL and RL.check and not RL.check[stepIndex] then
+        task.wait(stepDuration)
+    end
 
-local accentColor = Color3.fromRGB(250, 27, 117)
-local whiteColor  = Color3.new(1, 1, 1)
+    -- Label vom Main Script falls vorhanden, sonst Fallback
+    local label = (RL and RL.label ~= "" and RL.step == stepIndex)
+        and RL.label
+        or stepLabels[stepIndex]
 
-local function setBarProgress(progress)
-    local col = whiteColor:Lerp(accentColor, progress)
-    TweenService:Create(LoadingBar, TweenInfo.new(0.12, Enum.EasingStyle.Linear), {
-        Size = UDim2.new(progress, 0, 1, 0)
-    }):Play()
-    LoadingBar.BackgroundColor3  = col
-    PercentageLabel.Text         = math.floor(progress * 100) .. "%"
-end
-
-local function fadeInLabel(text)
-    InfoLabel.Text             = text
+    -- Ticks 1-8: fade in
+    InfoLabel.Text = label
     InfoLabel.TextTransparency = 1
     for j = 1, 8 do
         InfoLabel.TextTransparency = InfoLabel.TextTransparency - 0.125
-        task.wait(STEP_FADE_TIME)
-    end
-end
-
-local function fadeOutLabel()
-    for j = 1, 8 do
-        InfoLabel.TextTransparency = InfoLabel.TextTransparency + 0.125
-        task.wait(STEP_FADE_TIME)
-    end
-end
-
-
-local MIN_STEP_TIME = 0.7 
-
-for stepIndex = 1, TOTAL_STEPS do
-
-    local stepStart = tick()
-
-    local waited   = 0
-    local interval = 0.05
-    while _G.RubyHub_Loading.step < stepIndex and waited < STEP_TIMEOUT do
-        task.wait(interval)
-        waited = waited + interval
+        local progress = ((stepIndex-1)*16 + j) / totalTicks
+        TweenService:Create(LoadingBar, TweenInfo.new(stepDuration, Enum.EasingStyle.Linear), {
+            Size = UDim2.new(progress, 0, 1, 0)
+        }):Play()
+        LoadingBar.BackgroundColor3 = whiteColor:Lerp(accentColor, progress)
+        PercentageLabel.Text = math.floor(progress * 100) .. "%"
+        task.wait(stepDuration)
     end
 
-    local label = _G.RubyHub_Loading.label or ("Step " .. stepIndex .. "...")
-
-    fadeInLabel(label)
-
-    local progressEnd = stepIndex / TOTAL_STEPS
-    setBarProgress(progressEnd)
-
-    local elapsed   = tick() - stepStart
-    local remaining = MIN_STEP_TIME - elapsed
-    if remaining > 0 then
-        task.wait(remaining)
+    -- Ticks 9-16: label sichtbar, bar läuft weiter
+    for k = 1, 8 do
+        local progress = ((stepIndex-1)*16 + 8 + k) / totalTicks
+        TweenService:Create(LoadingBar, TweenInfo.new(stepDuration, Enum.EasingStyle.Linear), {
+            Size = UDim2.new(progress, 0, 1, 0)
+        }):Play()
+        LoadingBar.BackgroundColor3 = whiteColor:Lerp(accentColor, progress)
+        PercentageLabel.Text = math.floor(progress * 100) .. "%"
+        task.wait(stepDuration)
     end
 
+    -- Label ausblenden (außer letzter Step)
     if stepIndex < TOTAL_STEPS then
-        fadeOutLabel()
+        for f = 1, 4 do
+            InfoLabel.TextTransparency = f / 4
+            task.wait(stepDuration)
+        end
     end
 end
 
-
-local doneWait = 0
-while not _G.RubyHub_Loading.done and doneWait < 8 do
-    task.wait(0.05)
-    doneWait = doneWait + 0.05
+-- ============================================================
+-- ABSCHLUSS — auf done warten (max 8s Fallback)
+-- ============================================================
+do
+    local w = 0
+    while RL and not RL.done and w < 8 do
+        task.wait(0.05)
+        w = w + 0.05
+    end
 end
 
 TweenService:Create(LoadingBar, TweenInfo.new(0.1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
     Size = UDim2.new(1, 0, 1, 0)
 }):Play()
 LoadingBar.BackgroundColor3 = accentColor
-PercentageLabel.Text        = "100%"
+PercentageLabel.Text = "100%"
 
-InfoLabel.Text             = "Done!"
+InfoLabel.Text = "Done!"
 InfoLabel.TextTransparency = 1
 for i = 1, 8 do
     InfoLabel.TextTransparency = InfoLabel.TextTransparency - 0.125
@@ -319,8 +315,7 @@ end
 InfoLabel:Destroy()
 LoadingBarContainer:Destroy()
 PercentageLabel:Destroy()
-
-heartbeatConnection:Disconnect()
+heartbeatConn:Disconnect()
 
 local visibleFrame = nil
 for i = 1, #frame_data do
@@ -331,11 +326,8 @@ for i = 1, #frame_data do
 end
 
 for i = 1, 20 do
-    local progress = i / 20
-    if visibleFrame then
-        visibleFrame.ImageTransparency = progress
-    end
-    blur.Size = 60 * (1 - progress)
+    if visibleFrame then visibleFrame.ImageTransparency = i/20 end
+    blur.Size = 60 * (1 - i/20)
     task.wait(0.02)
 end
 
@@ -347,8 +339,5 @@ table.clear(frame_data)
 task.wait(0.2)
 ScreenGui:Destroy()
 sound:Stop()
-
 task.wait(0.5)
 blur:Destroy()
-
-_G.RubyHub_Intro_Finished = true
