@@ -1,3 +1,4 @@
+--v2
 local TweenService = game:GetService("TweenService")
 local ContentProvider = game:GetService("ContentProvider")
 local RunService = game:GetService("RunService")
@@ -15,6 +16,7 @@ blur.Size = 0
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
+
 
 if not isfolder("Audio") then
     makefolder("Audio")
@@ -91,6 +93,7 @@ end)
 
 task.wait(0.5)
 
+
 local frame_data = {}
 local currentImageLabel = { Size = UDim2.new(0, 0, 0, 0) }
 
@@ -129,7 +132,6 @@ heartbeatConnection = RunService.Heartbeat:Connect(function()
         end
     end
 end)
-
 
 local LoadingBarContainer = Instance.new("Frame")
 LoadingBarContainer.Parent               = ScreenGui
@@ -221,8 +223,8 @@ for i = 1, 8 do
 end
 
 
-local STEP_TIMEOUT   = 3.0
-local STEP_FADE_TIME = 0.015
+local STEP_TIMEOUT   = 3.0  
+local STEP_FADE_TIME = 0.015 
 
 local accentColor = Color3.fromRGB(250, 27, 117)
 local whiteColor  = Color3.new(1, 1, 1)
@@ -252,10 +254,12 @@ local function fadeOutLabel()
     end
 end
 
-local remainingFrameTime = (maxFramesToShow - currentFrame) * frameUpdateRate
-local timePerStep        = math.max(remainingFrameTime / TOTAL_STEPS, 0.6)
+
+local MIN_STEP_TIME = 0.7 
 
 for stepIndex = 1, TOTAL_STEPS do
+
+    local stepStart = tick()
 
     local waited   = 0
     local interval = 0.05
@@ -268,23 +272,23 @@ for stepIndex = 1, TOTAL_STEPS do
 
     fadeInLabel(label)
 
-    local progressStart = (stepIndex - 1) / TOTAL_STEPS
-    local progressEnd   = stepIndex       / TOTAL_STEPS
-    local halfTime      = (timePerStep - (STEP_FADE_TIME * 16)) / 2
-
-    setBarProgress(progressStart + (progressEnd - progressStart) * 0.5)
-    task.wait(math.max(halfTime, 0.1))
-
+    local progressEnd = stepIndex / TOTAL_STEPS
     setBarProgress(progressEnd)
-    task.wait(math.max(halfTime, 0.1))
+
+    local elapsed   = tick() - stepStart
+    local remaining = MIN_STEP_TIME - elapsed
+    if remaining > 0 then
+        task.wait(remaining)
+    end
 
     if stepIndex < TOTAL_STEPS then
         fadeOutLabel()
     end
 end
 
+
 local doneWait = 0
-while not _G.RubyHub_Loading.done and doneWait < 5 do
+while not _G.RubyHub_Loading.done and doneWait < 8 do
     task.wait(0.05)
     doneWait = doneWait + 0.05
 end
@@ -346,3 +350,5 @@ sound:Stop()
 
 task.wait(0.5)
 blur:Destroy()
+
+_G.RubyHub_Intro_Finished = true
